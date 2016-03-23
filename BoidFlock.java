@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.*;
 /**
@@ -10,7 +11,7 @@ import java.util.*;
  * @author gpz1505
  */
 public class BoidFlock {
-    public static int DETECTRADIUS = 10;
+    public static int DETECTRADIUS = 75;
     private int frameWidth;
     private int frameHeight;
     private List<Boid> boidList;
@@ -28,7 +29,7 @@ public class BoidFlock {
         boidThreads = new HashMap<>();
         for (int i = 0; i < numBoidsToStart; i++) {
             boidList.add(new Boid(this, RAND.nextInt(frameWidth), RAND.nextInt(frameHeight), RAND.nextInt(Boid.MAX_SPEED), RAND.nextFloat()*Boid.MAX_SPEED, frameWidth, frameHeight));
-            boidThreads.put(boidList.get(0), new Thread(boidList.get(i)));
+            boidThreads.put(boidList.get(i), new Thread(boidList.get(i)));
         }
         startAllThreads();
     }
@@ -70,15 +71,19 @@ public class BoidFlock {
     
     public synchronized List<Boid> getNeighbours(Boid boidToTest) {
         List<Boid> tempList = new ArrayList<>();
-        for( Boid aBoid : boidList ) {
-            if ( isNeighbour(boidToTest, aBoid) ) {
-                tempList.add(aBoid);
+        synchronized(this) {
+            for( Boid aBoid : boidList ) {
+                if ( isNeighbour(boidToTest, aBoid) ) {
+                    tempList.add(aBoid);
+                }
             }
         }
         return tempList;
     }
     
-    public synchronized void drawAllBoids(Graphics g) {
+    public void drawAllBoids(Graphics g) throws InterruptedException {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, frameWidth, frameHeight);
         for( Boid aBoid : boidList ) {
             aBoid.drawShip(g);
         }
