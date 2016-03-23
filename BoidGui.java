@@ -1,3 +1,4 @@
+package DSA_Boid;
 
 import com.sun.xml.internal.fastinfoset.EncodingConstants;
 import java.awt.BorderLayout;
