@@ -72,19 +72,15 @@ public class BoidFlock {
     
     public synchronized List<Boid> getNeighbours(Boid boidToTest) {
         List<Boid> tempList = new ArrayList<>();
-        synchronized(this) {
-            for( Boid aBoid : boidList ) {
-                if ( isNeighbour(boidToTest, aBoid) ) {
-                    tempList.add(aBoid);
-                }
+        for( Boid aBoid : boidList ) {
+            if ( isNeighbour(boidToTest, aBoid) ) {
+                tempList.add(aBoid);
             }
         }
         return tempList;
     }
     
     public void drawAllBoids(Graphics g) throws InterruptedException {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, frameWidth, frameHeight);
         for( Boid aBoid : boidList ) {
             aBoid.drawShip(g);
         }

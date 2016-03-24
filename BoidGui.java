@@ -1,25 +1,19 @@
 package DSA_Boid;
 
-import com.sun.xml.internal.fastinfoset.EncodingConstants;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -220,7 +214,8 @@ public class BoidGui {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     try {
-                                        
+                                        contentPanel.getGraphics().setColor(Color.BLACK);
+					contentPanel.getGraphics().fillRect(0, 0, contentPanel.getWidth(), contentPanel.getHeight());
                                         BF.drawAllBoids(contentPanel.getGraphics());
                                     } catch (InterruptedException ex) {
                                         Logger.getLogger(BoidGui.class.getName()).log(Level.SEVERE, null, ex);
