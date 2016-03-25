@@ -1,6 +1,7 @@
 package DSA_Boid;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -12,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -23,6 +26,8 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -117,7 +122,11 @@ public class BoidGui {
                 radiusSlider.setMinorTickSpacing(10);
                 radiusSlider.setPaintTicks(true);
                 radiusSlider.setPaintLabels(true);
+		JLabel radiusValue = new JLabel("(" + radiusSlider.getValue() + ")", JLabel.CENTER);
+                radiusValue.setForeground(Color.BLACK);
+                radiusValue.setFont(new Font("", Font.PLAIN, 16));
                 radiusPanel.add(radiusLabel);
+		radiusPanel.add(radiusValue);
                 radiusPanel.add(radiusSlider);
                 
                 //separation weight panel
@@ -127,13 +136,25 @@ public class BoidGui {
                 JLabel separationLabel = new JLabel("separation weight", JLabel.CENTER);
                 separationLabel.setFont(new Font("", Font.PLAIN, 16));
                 separationLabel.setForeground(Color.BLACK);
-                JSlider separationSlider = new JSlider(0, 200, BoidFlock.DETECTRADIUS);
+		Dictionary<Integer, Component> separationDictionary = new Hashtable<>();
+		separationDictionary.put(0, new JLabel("0.0"));
+		separationDictionary.put(60, new JLabel("0.6"));
+		separationDictionary.put(120, new JLabel("1.2"));
+		separationDictionary.put(180, new JLabel("1.8"));
+		separationDictionary.put(240, new JLabel("2.4"));
+		separationDictionary.put(300, new JLabel("3.0"));
+                JSlider separationSlider = new JSlider(0, 300, (int)(Boid.SEPARATION_WEIGHT*100));
                 separationSlider.setPreferredSize(new Dimension(290, 50));
-                separationSlider.setMajorTickSpacing(50);
-                separationSlider.setMinorTickSpacing(10);
+                separationSlider.setMajorTickSpacing(60);
+                separationSlider.setMinorTickSpacing(20);
                 separationSlider.setPaintTicks(true);
                 separationSlider.setPaintLabels(true);
+		separationSlider.setLabelTable(separationDictionary);
+		JLabel separationValue = new JLabel("(" + separationSlider.getValue()*0.01 + ")", JLabel.CENTER);
+                separationValue.setForeground(Color.BLACK);
+                separationValue.setFont(new Font("", Font.PLAIN, 16));
                 separationPanel.add(separationLabel);
+		separationPanel.add(separationValue);
                 separationPanel.add(separationSlider);
                 
                 //cohesion weight panel
@@ -143,13 +164,26 @@ public class BoidGui {
                 JLabel cohesionLabel = new JLabel("cohesion weight", JLabel.CENTER);
                 cohesionLabel.setFont(new Font("", Font.PLAIN, 16));
                 cohesionLabel.setForeground(Color.BLACK);
-                JSlider cohesionSlider = new JSlider(0, 200, BoidFlock.DETECTRADIUS);
+		Dictionary<Integer, Component> cohesionDictionary = new Hashtable<>();
+		cohesionDictionary.put(0, new JLabel("0.0"));
+		cohesionDictionary.put(2, new JLabel("0.02"));
+		cohesionDictionary.put(4, new JLabel("0.04"));
+		cohesionDictionary.put(6, new JLabel("0.06"));
+		cohesionDictionary.put(8, new JLabel("0.08"));
+		cohesionDictionary.put(10, new JLabel("0.1"));
+                JSlider cohesionSlider = new JSlider(0, 10, (int)(Boid.COHESION_WEIGHT*100));
                 cohesionSlider.setPreferredSize(new Dimension(290, 50));
-                cohesionSlider.setMajorTickSpacing(50);
-                cohesionSlider.setMinorTickSpacing(10);
+                cohesionSlider.setMajorTickSpacing(2);
+                cohesionSlider.setMinorTickSpacing(1);
                 cohesionSlider.setPaintTicks(true);
                 cohesionSlider.setPaintLabels(true);
+		cohesionSlider.setSnapToTicks(true);
+		cohesionSlider.setLabelTable(cohesionDictionary);
+		JLabel cohesionValue = new JLabel("(" + cohesionSlider.getValue()*0.01 + ")", JLabel.CENTER);
+                cohesionValue.setForeground(Color.BLACK);
+                cohesionValue.setFont(new Font("", Font.PLAIN, 16));
                 cohesionPanel.add(cohesionLabel);
+		cohesionPanel.add(cohesionValue);
                 cohesionPanel.add(cohesionSlider);
                 
                 //alignment weight panel
@@ -159,13 +193,26 @@ public class BoidGui {
                 JLabel alignmentLabel = new JLabel("alignment weight", JLabel.CENTER);
                 alignmentLabel.setFont(new Font("", Font.PLAIN, 16));
                 alignmentLabel.setForeground(Color.BLACK);
-                JSlider alignmentSlider = new JSlider(0, 200, BoidFlock.DETECTRADIUS);
+		Dictionary<Integer, Component> alignmentDictionary = new Hashtable<>();
+		alignmentDictionary.put(0, new JLabel("0.0"));
+		alignmentDictionary.put(2, new JLabel("0.02"));
+		alignmentDictionary.put(4, new JLabel("0.04"));
+		alignmentDictionary.put(6, new JLabel("0.06"));
+		alignmentDictionary.put(8, new JLabel("0.08"));
+		alignmentDictionary.put(10, new JLabel("0.1"));
+                JSlider alignmentSlider = new JSlider(0, 10, (int)(Boid.ALIGNMENT_WEIGHT*100));
                 alignmentSlider.setPreferredSize(new Dimension(290, 50));
-                alignmentSlider.setMajorTickSpacing(50);
-                alignmentSlider.setMinorTickSpacing(10);
+                alignmentSlider.setMajorTickSpacing(2);
+                alignmentSlider.setMinorTickSpacing(1);
                 alignmentSlider.setPaintTicks(true);
                 alignmentSlider.setPaintLabels(true);
+		alignmentSlider.setSnapToTicks(true);
+		alignmentSlider.setLabelTable(alignmentDictionary);
+		JLabel alignmentValue = new JLabel("(" + alignmentSlider.getValue()*0.01 + ")", JLabel.CENTER);
+                alignmentValue.setForeground(Color.BLACK);
+                alignmentValue.setFont(new Font("", Font.PLAIN, 16));
                 alignmentPanel.add(alignmentLabel);
+		alignmentPanel.add(alignmentValue);
                 alignmentPanel.add(alignmentSlider);
                 
                 controlPanel.add(titlePanel);
@@ -255,6 +302,42 @@ public class BoidGui {
                         BF.removeBoidFromFlock();
                     }
                 });
+		
+		radiusSlider.addChangeListener(new ChangeListener() {
+		    @Override
+		    public void stateChanged(ChangeEvent e) {
+			BoidFlock.DETECTRADIUS = radiusSlider.getValue();
+			radiusValue.setText("(" + BoidFlock.DETECTRADIUS + ")");
+			radiusValue.repaint();
+		    }
+		});
+		
+		separationSlider.addChangeListener(new ChangeListener() {
+		    @Override
+		    public void stateChanged(ChangeEvent e) {
+			Boid.SEPARATION_WEIGHT = (float)(separationSlider.getValue()/100.0);
+			separationValue.setText("(" + Boid.SEPARATION_WEIGHT + ")");
+			separationValue.repaint();
+		    }
+		});
+		
+		cohesionSlider.addChangeListener(new ChangeListener() {
+		    @Override
+		    public void stateChanged(ChangeEvent e) {
+			Boid.COHESION_WEIGHT = (float)(cohesionSlider.getValue()/100.0);
+			cohesionValue.setText("(" + Boid.COHESION_WEIGHT + ")");
+			cohesionValue.repaint();
+		    }
+		});
+		
+		alignmentSlider.addChangeListener(new ChangeListener() {
+		    @Override
+		    public void stateChanged(ChangeEvent e) {
+			Boid.ALIGNMENT_WEIGHT = (float)(alignmentSlider.getValue()/100.0);
+			alignmentValue.setText("(" + Boid.ALIGNMENT_WEIGHT + ")");
+			alignmentValue.repaint();
+		    }
+		});
                 
             }
         });
