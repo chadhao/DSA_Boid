@@ -253,6 +253,7 @@ public class BoidGui {
                             JOptionPane.showMessageDialog(null, "Number of boids to start cannot be zero!", "Information", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             startButton.setEnabled(false);
+			    startField.setEnabled(false);
                             clearButton.setEnabled(true);
                             addButton.setEnabled(true);
                             removeButton.setEnabled(true);
@@ -279,6 +280,7 @@ public class BoidGui {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         startField.setText("");
+			startField.setEnabled(true);
                         startButton.setEnabled(true);
                         clearButton.setEnabled(false);
                         addButton.setEnabled(false);
@@ -292,7 +294,11 @@ public class BoidGui {
                 addButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        BF.addBoidToFlock();
+                        if (BF.getNumberOfBoids() == 0) {
+			    removeButton.setEnabled(true);
+			}
+			BF.addBoidToFlock();
+			startField.setText(Integer.toString(BF.getNumberOfBoids()));
                     }
                 });
                 
@@ -300,6 +306,10 @@ public class BoidGui {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         BF.removeBoidFromFlock();
+			startField.setText(Integer.toString(BF.getNumberOfBoids()));
+			if (BF.getNumberOfBoids() == 0) {
+			    removeButton.setEnabled(false);
+			}
                     }
                 });
 		
